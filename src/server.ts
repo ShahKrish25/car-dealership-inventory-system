@@ -1,7 +1,9 @@
 import app from "./app";
 import mongoose from "mongoose";
+import dns from "node:dns"
 import dotenv from "dotenv";
 dotenv.config();
+dns.setServers(["1.1.1.1"]);
 
 const PORT = process.env.PORT || 5000;
 
