@@ -79,7 +79,7 @@ export const updateVehicle = async (req: Request, res: Response) => {
     const updatedVehicle = await Vehicle.findByIdAndUpdate(
       req.params.id,
       req.body,
-      { returnDocument: "after" }
+      { returnDocument: "after", runValidators: true }
     );
 
     if (!updatedVehicle) {
@@ -101,6 +101,60 @@ export const deleteVehicle = async (req: Request, res: Response) => {
     }
 
     return res.status(200).json({ message: "Vehicle deleted successfully" });
+  } catch (error) {
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const purchaseVehicle = async (req: Request, res: Response) => {
+  try {
+    const vehicle = await Vehicle.findById(req.params.id);
+
+    if (!vehicle) {
+      return res.status(404).json({ message: "Vehicle not found" });
+    }
+
+    if (vehicle.quantity <= 0) {
+      return res.status(400).json({ message: "Vehicle out of stock" });
+    }
+
+    vehicle.quantity -= 1;
+    await vehicle.save();
+
+    return res.status(200).json({
+      message: "Vehicle purchased successfully",
+      vehicle,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const restockVehicle = async (req: Request, res: Response) => {
+  try {
+    const { quantity } = req.body;
+
+    const vehicle = await Vehicle.findById(req.params.id);
+
+    if (!vehicle) {
+      return res.status(404).json({ message: "Vehicle not found" });
+    }
+
+    const restockAmount = Number(quantity) || 1;
+
+    if (restockAmount <= 0) {
+      return res
+        .status(400)
+        .json({ message: "Restock quantity must be greater than 0" });
+    }
+
+    vehicle.quantity += restockAmount;
+    await vehicle.save();
+
+    return res.status(200).json({
+      message: "Vehicle restocked successfully",
+      vehicle,
+    });
   } catch (error) {
     return res.status(500).json({ message: "Server error" });
   }
