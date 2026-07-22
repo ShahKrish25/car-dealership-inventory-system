@@ -7,7 +7,7 @@ interface Props {
   onSubmit: (payload: VehiclePayload) => Promise<void>;
   loading: boolean;
 }
-
+// sample commit
 export default function AdminVehicleForm({ vehicle, onClose, onSubmit, loading }: Props) {
   const [formData, setFormData] = useState<VehiclePayload>({
     brand: vehicle?.brand || '',
