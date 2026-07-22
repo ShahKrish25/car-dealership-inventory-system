@@ -11,7 +11,11 @@ import { authenticate, isAdmin } from "../middleware/auth.middleware";
 
 const router = Router();
 
+// Public routes
 router.get("/", getVehicles);
+router.get("/search", getVehicles); // Dedicated search route (supports ?make=&model=&category=&minPrice=&maxPrice=&search=)
+
+// Admin-protected routes
 router.post("/", authenticate, isAdmin, createVehicle);
 router.put("/:id", authenticate, isAdmin, updateVehicle);
 router.delete("/:id", authenticate, isAdmin, deleteVehicle);
