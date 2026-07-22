@@ -1,0 +1,116 @@
+import request from "supertest";
+import jwt from "jsonwebtoken";
+import app from "../app";
+// import vehicleRoutes from "../routes/vehicle.route";
+import Vehicle from "../models/vehicle.model";
+
+
+
+describe("Vehicle Routes", () => {
+  const adminToken = jwt.sign(
+    { id: "123", role: "admin" },
+    process.env.JWT_SECRET as string
+  );
+
+  const userToken = jwt.sign(
+    { id: "456", role: "user" },
+    process.env.JWT_SECRET as string
+  );
+
+  it("should get all vehicles publicly", async () => {
+    await Vehicle.create({
+      brand: "Honda",
+      model: "City",
+      year: 2021,
+      price: 1200000,
+      fuelType: "Petrol",
+      transmission: "Manual",
+      mileage: 22000,
+      color: "White",
+    });
+
+    const res = await request(app).get("/api/vehicles");
+
+    expect(res.status).toBe(200);
+    expect(Array.isArray(res.body)).toBe(true);
+    expect(res.body.length).toBe(1);
+  });
+
+  it("should allow admin to create a vehicle", async () => {
+    const res = await request(app)
+      .post("/api/vehicles")
+      .set("Authorization", `Bearer ${adminToken}`)
+      .send({
+        brand: "Toyota",
+        model: "Innova",
+        year: 2023,
+        price: 2500000,
+        fuelType: "Diesel",
+        transmission: "Automatic",
+        mileage: 10000,
+        color: "Silver",
+      });
+
+    expect(res.status).toBe(201);
+    expect(res.body).toHaveProperty("_id");
+  });
+
+  it("should block normal user from creating a vehicle", async () => {
+    const res = await request(app)
+      .post("/api/vehicles")
+      .set("Authorization", `Bearer ${userToken}`)
+      .send({
+        brand: "Toyota",
+        model: "Innova",
+        year: 2023,
+        price: 2500000,
+        fuelType: "Diesel",
+        transmission: "Automatic",
+        mileage: 10000,
+        color: "Silver",
+      });
+
+    expect(res.status).toBe(403);
+  });
+
+  it("should allow admin to update a vehicle", async () => {
+    const vehicle = await Vehicle.create({
+      brand: "Hyundai",
+      model: "Creta",
+      year: 2020,
+      price: 1500000,
+      fuelType: "Petrol",
+      transmission: "Manual",
+      mileage: 18000,
+      color: "Blue",
+    });
+
+    const res = await request(app)
+      .put(`/api/vehicles/${vehicle._id}`)
+      .set("Authorization", `Bearer ${adminToken}`)
+      .send({ price: 1600000 });
+
+    expect(res.status).toBe(200);
+    expect(res.body.price).toBe(1600000);
+  });
+
+  it("should allow admin to delete a vehicle", async () => {
+    const vehicle = await Vehicle.create({
+      brand: "Mahindra",
+      model: "XUV700",
+      year: 2022,
+      price: 2200000,
+      fuelType: "Diesel",
+      transmission: "Automatic",
+      mileage: 12000,
+      color: "Red",
+    });
+
+    const res = await request(app)
+      .delete(`/api/vehicles/${vehicle._id}`)
+      .set("Authorization", `Bearer ${adminToken}`);
+
+    expect(res.status).toBe(200);
+    expect(res.body.message).toBe("Vehicle deleted successfully");
+  });
+});

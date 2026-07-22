@@ -2,7 +2,6 @@ import request from "supertest";
 import app from "../app";
 import authRoutes from "../routes/auth.routes";
 
-app.use("/api/auth", authRoutes);
 
 describe("POST /api/auth/login", () => {
   beforeEach(async () => {

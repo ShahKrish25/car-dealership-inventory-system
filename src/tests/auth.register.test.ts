@@ -1,8 +1,7 @@
 import request from "supertest";
 import app from "../app";
-import authRoutes from "../routes/auth.routes";
+// import authRoutes from "../routes/auth.routes";
 
-app.use("/api/auth", authRoutes);
 
 describe("POST /api/auth/register", () => {
   it("should register a new user and return 201 with a token", async () => {
