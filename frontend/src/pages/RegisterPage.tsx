@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
+import { register as apiRegister } from '../api/auth';
 
 export default function RegisterPage() {
-  const { register } = useAuth();
+  const { login } = useAuth();
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -21,7 +23,8 @@ export default function RegisterPage() {
 
     setLoading(true);
     try {
-      await register(email, password);
+      const response = await apiRegister({ name, email, password });
+      login(response.token);
     } catch (err: unknown) {
       if (err && typeof err === 'object' && 'response' in err) {
         const errorData = (err as { response?: { data?: { message?: string } } }).response?.data;
@@ -50,6 +53,20 @@ export default function RegisterPage() {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1.5" htmlFor="name">
+                Full Name
+              </label>
+              <input
+                id="name"
+                type="text"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all"
+                placeholder="John Doe"
+              />
+            </div>
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-1.5" htmlFor="email">
                 Email Address

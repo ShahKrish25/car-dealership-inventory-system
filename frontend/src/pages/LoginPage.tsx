@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
+import { login as apiLogin } from '../api/auth';
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -14,7 +15,8 @@ export default function LoginPage() {
     setError('');
     setLoading(true);
     try {
-      await login(email, password);
+      const response = await apiLogin({ email, password });
+      login(response.token);
     } catch (err: unknown) {
       if (err && typeof err === 'object' && 'response' in err) {
         const errorData = (err as { response?: { data?: { message?: string } } }).response?.data;
