@@ -114,3 +114,170 @@ describe("Vehicle Routes", () => {
     expect(res.body.message).toBe("Vehicle deleted successfully");
   });
 });
+
+
+it("should filter vehicles by brand", async () => {
+  await Vehicle.create([
+    {
+      brand: "Toyota",
+      model: "Fortuner",
+      year: 2022,
+      price: 3500000,
+      fuelType: "Diesel",
+      transmission: "Automatic",
+      mileage: 15000,
+      color: "Black",
+    },
+    {
+      brand: "Honda",
+      model: "City",
+      year: 2021,
+      price: 1200000,
+      fuelType: "Petrol",
+      transmission: "Manual",
+      mileage: 22000,
+      color: "White",
+    },
+  ]);
+
+  const res = await request(app).get("/api/vehicles?brand=Toyota");
+
+  expect(res.status).toBe(200);
+  expect(res.body.length).toBe(1);
+  expect(res.body[0].brand).toBe("Toyota");
+});
+
+it("should filter vehicles by fuel type", async () => {
+  await Vehicle.create([
+    {
+      brand: "Toyota",
+      model: "Fortuner",
+      year: 2022,
+      price: 3500000,
+      fuelType: "Diesel",
+      transmission: "Automatic",
+      mileage: 15000,
+      color: "Black",
+    },
+    {
+      brand: "Honda",
+      model: "City",
+      year: 2021,
+      price: 1200000,
+      fuelType: "Petrol",
+      transmission: "Manual",
+      mileage: 22000,
+      color: "White",
+    },
+  ]);
+
+  const res = await request(app).get("/api/vehicles?fuelType=Diesel");
+
+  expect(res.status).toBe(200);
+  expect(res.body.length).toBe(1);
+  expect(res.body[0].fuelType).toBe("Diesel");
+});
+
+it("should filter vehicles by price range", async () => {
+  await Vehicle.create([
+    {
+      brand: "Toyota",
+      model: "Fortuner",
+      year: 2022,
+      price: 3500000,
+      fuelType: "Diesel",
+      transmission: "Automatic",
+      mileage: 15000,
+      color: "Black",
+    },
+    {
+      brand: "Honda",
+      model: "City",
+      year: 2021,
+      price: 1200000,
+      fuelType: "Petrol",
+      transmission: "Manual",
+      mileage: 22000,
+      color: "White",
+    },
+    {
+      brand: "Hyundai",
+      model: "Creta",
+      year: 2020,
+      price: 1800000,
+      fuelType: "Petrol",
+      transmission: "Automatic",
+      mileage: 18000,
+      color: "Blue",
+    },
+  ]);
+
+  const res = await request(app).get(
+    "/api/vehicles?minPrice=1000000&maxPrice=3000000"
+  );
+
+  expect(res.status).toBe(200);
+  expect(res.body.length).toBe(2);
+});
+
+it("should sort vehicles by price in ascending order", async () => {
+  await Vehicle.create([
+    {
+      brand: "Toyota",
+      model: "Fortuner",
+      year: 2022,
+      price: 3500000,
+      fuelType: "Diesel",
+      transmission: "Automatic",
+      mileage: 15000,
+      color: "Black",
+    },
+    {
+      brand: "Honda",
+      model: "City",
+      year: 2021,
+      price: 1200000,
+      fuelType: "Petrol",
+      transmission: "Manual",
+      mileage: 22000,
+      color: "White",
+    },
+  ]);
+
+  const res = await request(app).get("/api/vehicles?sortBy=price&order=asc");
+
+  expect(res.status).toBe(200);
+  expect(res.body[0].price).toBe(1200000);
+  expect(res.body[1].price).toBe(3500000);
+});
+
+it("should search vehicles by brand or model", async () => {
+  await Vehicle.create([
+    {
+      brand: "Toyota",
+      model: "Fortuner",
+      year: 2022,
+      price: 3500000,
+      fuelType: "Diesel",
+      transmission: "Automatic",
+      mileage: 15000,
+      color: "Black",
+    },
+    {
+      brand: "Honda",
+      model: "City",
+      year: 2021,
+      price: 1200000,
+      fuelType: "Petrol",
+      transmission: "Manual",
+      mileage: 22000,
+      color: "White",
+    },
+  ]);
+
+  const res = await request(app).get("/api/vehicles?search=toyota");
+
+  expect(res.status).toBe(200);
+  expect(res.body.length).toBe(1);
+  expect(res.body[0].brand).toBe("Toyota");
+});

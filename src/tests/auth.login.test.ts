@@ -1,6 +1,6 @@
 import request from "supertest";
 import app from "../app";
-import authRoutes from "../routes/auth.routes";
+// import authRoutes from "../routes/auth.routes";
 
 
 describe("POST /api/auth/login", () => {

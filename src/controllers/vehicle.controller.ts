@@ -3,7 +3,40 @@ import Vehicle from "../models/vehicle.model";
 
 export const getVehicles = async (req: Request, res: Response) => {
   try {
-    const vehicles = await Vehicle.find();
+    const { brand, fuelType, minPrice, maxPrice, search, sortBy, order } = req.query;
+
+    const filter: any = {};
+
+    if (brand) {
+      filter.brand = brand;
+    }
+
+    if (fuelType) {
+      filter.fuelType = fuelType;
+    }
+
+    if (minPrice || maxPrice) {
+      filter.price = {};
+      if (minPrice) filter.price.$gte = Number(minPrice);
+      if (maxPrice) filter.price.$lte = Number(maxPrice);
+    }
+
+    if (search) {
+      filter.$or = [
+        { brand: { $regex: search, $options: "i" } },
+        { model: { $regex: search, $options: "i" } },
+      ];
+    }
+
+    let query = Vehicle.find(filter);
+
+    if (sortBy) {
+      query = query.sort({
+        [sortBy as string]: order === "desc" ? -1 : 1,
+      });
+    }
+
+    const vehicles = await query;
     return res.status(200).json(vehicles);
   } catch (error) {
     return res.status(500).json({ message: "Server error" });
@@ -25,7 +58,7 @@ export const updateVehicle = async (req: Request, res: Response) => {
     const updatedVehicle = await Vehicle.findByIdAndUpdate(
       req.params.id,
       req.body,
-      { new: true }
+      { returnDocument: "after" }
     );
 
     if (!updatedVehicle) {
