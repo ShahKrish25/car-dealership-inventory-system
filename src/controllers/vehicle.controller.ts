@@ -3,7 +3,17 @@ import Vehicle from "../models/vehicle.model";
 
 export const getVehicles = async (req: Request, res: Response) => {
   try {
-    const { brand, fuelType, minPrice, maxPrice, search, sortBy, order } = req.query;
+    const {
+      brand,
+      fuelType,
+      minPrice,
+      maxPrice,
+      search,
+      sortBy,
+      order,
+      page = "1",
+      limit = "10",
+    } = req.query;
 
     const filter: any = {};
 
@@ -36,8 +46,19 @@ export const getVehicles = async (req: Request, res: Response) => {
       });
     }
 
-    const vehicles = await query;
-    return res.status(200).json(vehicles);
+    const pageNumber = Number(page) || 1;
+    const limitNumber = Number(limit) || 10;
+    const skip = (pageNumber - 1) * limitNumber;
+
+    const total = await Vehicle.countDocuments(filter);
+    const vehicles = await query.skip(skip).limit(limitNumber);
+
+    return res.status(200).json({
+      data: vehicles,
+      total,
+      page: pageNumber,
+      pages: Math.ceil(total / limitNumber),
+    });
   } catch (error) {
     return res.status(500).json({ message: "Server error" });
   }
