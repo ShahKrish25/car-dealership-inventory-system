@@ -381,6 +381,41 @@ describe("Vehicle Routes", () => {
     expect(res.body.data[0].transmission).toBe("Automatic");
   });
 
+  it("should return only matching vehicles when model is passed", async () => {
+    await Vehicle.create([
+      {
+        brand: "Honda",
+        model: "City",
+        category: "Sedan",
+        year: 2021,
+        price: 1200000,
+        fuelType: "Petrol",
+        transmission: "Manual",
+        mileage: 22000,
+        color: "White",
+        quantity: 2,
+      },
+      {
+        brand: "Toyota",
+        model: "Fortuner",
+        category: "SUV",
+        year: 2022,
+        price: 3500000,
+        fuelType: "Diesel",
+        transmission: "Automatic",
+        mileage: 15000,
+        color: "Black",
+        quantity: 3,
+      },
+    ]);
+
+    const res = await request(app).get("/api/vehicles?model=City");
+
+    expect(res.status).toBe(200);
+    expect(res.body.data.length).toBe(1);
+    expect(res.body.data[0].model).toBe("City");
+  });
+
   it("should filter vehicles by brand", async () => {
     await Vehicle.create([
       {
