@@ -10,6 +10,9 @@ export function applyVehicleFilters(
   previous: VehicleFilters,
   next: VehicleFilters
 ): VehicleFilters {
-  // BUG (red): merging keeps stale filters like transmission=Automatic
-  return { ...previous, ...next, page: 1 };
+  return {
+    limit: previous.limit ?? 9,
+    page: 1,
+    ...next,
+  };
 }

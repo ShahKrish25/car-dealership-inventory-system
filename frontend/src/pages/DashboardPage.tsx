@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { getVehicles, searchVehicles } from '../api/vehicles';
 import type { Vehicle, VehicleFilters } from '../api/vehicles';
+import { applyVehicleFilters } from '../utils/applyVehicleFilters';
 import VehicleCard from '../components/VehicleCard';
 import SearchFilters from '../components/SearchFilters';
 import { useAuth } from '../context/AuthContext';
@@ -37,8 +38,7 @@ export default function DashboardPage() {
   }, [activeFilters, fetchVehicles]);
 
   const handleFilter = (filters: VehicleFilters) => {
-    const newFilters = { ...activeFilters, ...filters, page: 1 };
-    setActiveFilters(newFilters);
+    setActiveFilters(applyVehicleFilters(activeFilters, filters));
   };
 
   const handlePageChange = (newPage: number) => {
