@@ -5,7 +5,13 @@ export const buildVehicleFilter = (query: Request["query"]) => {
   const { minPrice, maxPrice, search } = query;
   const filter: Record<string, unknown> = {};
 
-  const exactFields = ["brand", "category", "fuelType", "transmission"] as const;
+  const exactFields = [
+    "brand",
+    "model",
+    "category",
+    "fuelType",
+    "transmission",
+  ] as const;
   for (const field of exactFields) {
     if (query[field]) filter[field] = query[field];
   }
