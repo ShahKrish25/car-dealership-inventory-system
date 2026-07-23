@@ -2,12 +2,14 @@ import { Request, Response } from "express";
 import Vehicle from "../models/vehicle.model";
 
 export const buildVehicleFilter = (query: Request["query"]) => {
-  const { brand, category, fuelType, minPrice, maxPrice, search } = query;
+  const { brand, category, fuelType, transmission, minPrice, maxPrice, search } =
+    query;
   const filter: Record<string, unknown> = {};
 
   if (brand) filter.brand = brand;
   if (category) filter.category = category;
   if (fuelType) filter.fuelType = fuelType;
+  if (transmission) filter.transmission = transmission;
 
   if (minPrice || maxPrice) {
     const price: { $gte?: number; $lte?: number } = {};
