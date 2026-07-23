@@ -14,10 +14,9 @@ export default function Navbar() {
   const isActive = (path: string) => location.pathname === path;
 
   const linkClass = (path: string) =>
-    `block px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-      isActive(path)
-        ? 'bg-blue-50 text-blue-700'
-        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+    `block px-3 py-2 rounded-md text-sm font-medium transition-colors ${isActive(path)
+      ? 'bg-blue-50 text-blue-700'
+      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
     }`;
 
   return (
@@ -25,7 +24,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <Link to="/" className="flex items-center gap-2 min-w-0">
-            <span className="text-2xl shrink-0">🚗</span>
+            <span className="text-2xl shrink-0"></span>
             <span className="text-lg sm:text-xl font-bold text-gray-900 tracking-tight truncate">
               AutoVault
             </span>

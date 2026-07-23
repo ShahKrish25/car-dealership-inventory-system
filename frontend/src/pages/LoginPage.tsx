@@ -35,7 +35,7 @@ export default function LoginPage() {
         <div className="p-8">
           <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-50 text-3xl mb-4">
-              🚗
+              AV
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome Back</h2>
             <p className="text-sm text-gray-500">Sign in to manage your inventory</p>
