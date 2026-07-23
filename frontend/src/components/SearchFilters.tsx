@@ -5,6 +5,11 @@ interface Props {
   onFilter: (filters: VehicleFilters) => void;
 }
 
+const omitEmptyFilters = (filters: VehicleFilters): VehicleFilters =>
+  Object.fromEntries(
+    Object.entries(filters).filter(([, value]) => value !== '' && value !== undefined)
+  );
+
 export default function SearchFilters({ onFilter }: Props) {
   const [filters, setFilters] = useState<VehicleFilters>({});
 
@@ -14,10 +19,7 @@ export default function SearchFilters({ onFilter }: Props) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const cleanFilters = Object.fromEntries(
-      Object.entries(filters).filter(([_, v]) => v !== '' && v !== undefined)
-    );
-    onFilter(cleanFilters);
+    onFilter(omitEmptyFilters(filters));
   };
 
   const handleReset = () => {
