@@ -168,6 +168,17 @@ After registering, update your user role in MongoDB:
 db.users.updateOne({ email: "your@email.com" }, { $set: { role: "admin" } })
 ```
 
+### 5. Sample Login Credentials
+
+Use these sample accounts for local development and API testing:
+
+| Role | Email | Password |
+|---|---|---|
+| User | `vipkrish007@gmail.com` | `123456` |
+| Admin | `intern@incubyte.co` | `1234567` |
+
+Register both accounts through `POST /api/auth/register`. After registering the admin account, assign it the admin role using the MongoDB command above. These credentials are for local testing only and must not be used in production.
+
 ---
 
 ## API Reference
@@ -213,7 +224,7 @@ Run the full suite with coverage:
 npm run test:coverage
 ```
 
-Latest saved report: [`docs/coverage-report.txt`](./docs/coverage-report.txt)
+Latest saved report: [`Test Report.txt: `](test-report.txt)
 
 ### Coverage Summary
 | Metric | Coverage |
