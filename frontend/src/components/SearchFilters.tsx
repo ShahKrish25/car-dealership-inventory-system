@@ -44,7 +44,7 @@ export default function SearchFilters({ onFilter }: Props) {
         />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-5">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-5">
         <div>
           <label className={labelClasses}>Brand</label>
           <input
@@ -52,6 +52,17 @@ export default function SearchFilters({ onFilter }: Props) {
             placeholder="e.g. Toyota"
             value={filters.brand || ''}
             onChange={(e) => handleChange('brand', e.target.value)}
+            className={inputClasses}
+          />
+        </div>
+
+        <div>
+          <label className={labelClasses}>Model</label>
+          <input
+            type="text"
+            placeholder="e.g. Fortuner"
+            value={filters.model || ''}
+            onChange={(e) => handleChange('model', e.target.value)}
             className={inputClasses}
           />
         </div>

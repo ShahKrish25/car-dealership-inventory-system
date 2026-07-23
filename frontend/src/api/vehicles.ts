@@ -19,6 +19,7 @@ export interface Vehicle {
 export interface VehicleFilters {
   search?: string;
   brand?: string;
+  model?: string;
   category?: string;
   fuelType?: string;
   transmission?: string;
