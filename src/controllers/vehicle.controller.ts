@@ -1,47 +1,35 @@
 import { Request, Response } from "express";
 import Vehicle from "../models/vehicle.model";
 
+export const buildVehicleFilter = (query: Request["query"]) => {
+  const { brand, category, fuelType, minPrice, maxPrice, search } = query;
+  const filter: Record<string, unknown> = {};
+
+  if (brand) filter.brand = brand;
+  if (category) filter.category = category;
+  if (fuelType) filter.fuelType = fuelType;
+
+  if (minPrice || maxPrice) {
+    const price: { $gte?: number; $lte?: number } = {};
+    if (minPrice) price.$gte = Number(minPrice);
+    if (maxPrice) price.$lte = Number(maxPrice);
+    filter.price = price;
+  }
+
+  if (search) {
+    filter.$or = [
+      { brand: { $regex: search, $options: "i" } },
+      { model: { $regex: search, $options: "i" } },
+    ];
+  }
+
+  return filter;
+};
+
 export const getVehicles = async (req: Request, res: Response) => {
   try {
-    const {
-      brand,
-      category,
-      fuelType,
-      minPrice,
-      maxPrice,
-      search,
-      sortBy,
-      order,
-      page = "1",
-      limit = "10",
-    } = req.query;
-
-    const filter: any = {};
-
-    if (brand) {
-      filter.brand = brand;
-    }
-
-    if (category) {
-      filter.category = category;
-    }
-
-    if (fuelType) {
-      filter.fuelType = fuelType;
-    }
-
-    if (minPrice || maxPrice) {
-      filter.price = {};
-      if (minPrice) filter.price.$gte = Number(minPrice);
-      if (maxPrice) filter.price.$lte = Number(maxPrice);
-    }
-
-    if (search) {
-      filter.$or = [
-        { brand: { $regex: search, $options: "i" } },
-        { model: { $regex: search, $options: "i" } },
-      ];
-    }
+    const { sortBy, order, page = "1", limit = "10" } = req.query;
+    const filter = buildVehicleFilter(req.query);
 
     let query = Vehicle.find(filter);
 
