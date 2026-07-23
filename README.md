@@ -207,23 +207,37 @@ db.users.updateOne({ email: "your@email.com" }, { $set: { role: "admin" } })
 
 ## Test Report
 
-Run tests with:
+Run the full suite with coverage:
+
 ```bash
-npm test -- --coverage
+npm run test:coverage
 ```
+
+Latest saved report: [`docs/coverage-report.txt`](./docs/coverage-report.txt)
+
+### Coverage Summary
+| Metric | Coverage |
+|---|---|
+| Statements | **90.64%** |
+| Branches | **76.92%** |
+| Functions | **100%** |
+| Lines | **90.38%** |
 
 ### Test Suites
 | Suite | Tests | Description |
 |---|---|---|
-| `auth.register.test.ts` | 2 | User registration, duplicate email |
-| `auth.login.test.ts` | 2 | Login success, invalid credentials |
-| `auth.middleware.test.ts` | 4 | JWT verification, admin guard |
-| `user.model.test.ts` | 1 | Password hashing |
-| `vehicle.model.test.ts` | 2 | Schema validation |
-| `vehicle.routes.test.ts` | 13 | Full CRUD, pagination, filters, purchase, restock |
-| `sanity.test.ts` | 1 | Sanity check |
+| `auth.register.test.ts` | Registration success / failures |
+| `auth.login.test.ts` | Login success / invalid credentials |
+| `auth.middleware.test.ts` | JWT verification, admin guard |
+| `user.model.test.ts` | Password hashing |
+| `vehicle.model.test.ts` | Schema validation |
+| `vehicle.routes.test.ts` | CRUD, pagination, filters, purchase, restock |
+| `applyVehicleFilters.test.ts` | Filter reset / clear-on-All behavior |
+| `sanity.test.ts` | Sanity check |
 
-**Total: ~25 tests**
+**Total: 34 tests — all passing**
+
+HTML report (local): after `npm run test:coverage`, open `coverage/lcov-report/index.html`
 
 ---
 
