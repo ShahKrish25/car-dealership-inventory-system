@@ -1,0 +1,28 @@
+car-dealership-backend@1.0.0 test:coverage
+> jest --coverage --runInBand
+
+-------------------|---------|----------|---------|---------|-------------------
+All files          |    95.9 |    90.38 |     100 |   96.15 |                   
+ src               |     100 |      100 |     100 |     100 |                   
+  app.ts           |     100 |      100 |     100 |     100 |                   
+ src/controllers   |   94.78 |     90.9 |     100 |   94.17 |                   
+  auth.controller.ts   |     100 |      100 |     100 |     100 |             
+  vehicle.controller.ts |   93.02 |    89.47 |     100 |    92.1 | ...99,113,137,167 
+ src/middleware     |     100 |      100 |     100 |     100 |                   
+  auth.middleware.ts |     100 |      100 |     100 |     100 |                   
+ src/models         |    90.9 |       50 |     100 |     100 |                   
+  user.model.ts     |    87.5 |       50 |     100 |     100 | 19                
+  vehicle.model.ts  |     100 |      100 |     100 |     100 |                   
+ src/routes         |     100 |      100 |     100 |     100 |                   
+  auth.routes.ts    |     100 |      100 |     100 |     100 |                   
+  vehicle.routes.ts |     100 |      100 |     100 |     100 |                   
+
+=============================== Coverage summary ===============================
+Statements   : 95.9% ( 164/171 )
+Branches     : 90.38% ( 47/52 )
+Functions    : 100% ( 12/12 )
+Lines        : 96.15% ( 150/156 )
+=================================================================================
+
+Test Suites: 8 passed, 8 total
+Tests:       44 passed, 44 total

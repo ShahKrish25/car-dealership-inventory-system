@@ -101,6 +101,16 @@ describe("Vehicle Routes", () => {
     expect(res.body.price).toBe(1600000);
   });
 
+  it("should return 404 when updating a missing vehicle", async () => {
+    const res = await request(app)
+      .put("/api/vehicles/507f1f77bcf86cd799439011")
+      .set("Authorization", `Bearer ${adminToken}`)
+      .send({ price: 1600000 });
+
+    expect(res.status).toBe(404);
+    expect(res.body.message).toBe("Vehicle not found");
+  });
+
   it("should allow admin to delete a vehicle", async () => {
     const vehicle = await Vehicle.create({
       brand: "Mahindra",
@@ -121,6 +131,15 @@ describe("Vehicle Routes", () => {
 
     expect(res.status).toBe(200);
     expect(res.body.message).toBe("Vehicle deleted successfully");
+  });
+
+  it("should return 404 when deleting a missing vehicle", async () => {
+    const res = await request(app)
+      .delete("/api/vehicles/507f1f77bcf86cd799439011")
+      .set("Authorization", `Bearer ${adminToken}`);
+
+    expect(res.status).toBe(404);
+    expect(res.body.message).toBe("Vehicle not found");
   });
 
   it("should paginate vehicles with page and limit", async () => {
@@ -265,6 +284,15 @@ describe("Vehicle Routes", () => {
     expect(res.body.message).toBe("Vehicle out of stock");
   });
 
+  it("should return 404 when purchasing a missing vehicle", async () => {
+    const res = await request(app)
+      .post("/api/vehicles/507f1f77bcf86cd799439011/purchase")
+      .set("Authorization", `Bearer ${userToken}`);
+
+    expect(res.status).toBe(404);
+    expect(res.body.message).toBe("Vehicle not found");
+  });
+
   it("should allow admin to restock a vehicle", async () => {
     const vehicle = await Vehicle.create({
       brand: "Hyundai",
@@ -309,6 +337,62 @@ describe("Vehicle Routes", () => {
       .send({ quantity: 3 });
 
     expect(res.status).toBe(403);
+  });
+
+  it("should reject a negative restock quantity", async () => {
+    const vehicle = await Vehicle.create({
+      brand: "Kia",
+      model: "Seltos",
+      category: "SUV",
+      year: 2022,
+      price: 1700000,
+      fuelType: "Petrol",
+      transmission: "Automatic",
+      mileage: 14000,
+      color: "Grey",
+      quantity: 2,
+    });
+
+    const res = await request(app)
+      .post(`/api/vehicles/${vehicle._id}/restock`)
+      .set("Authorization", `Bearer ${adminToken}`)
+      .send({ quantity: -1 });
+
+    expect(res.status).toBe(400);
+    expect(res.body.message).toBe("Restock quantity must be greater than 0");
+  });
+
+  it("should default an omitted restock quantity to one", async () => {
+    const vehicle = await Vehicle.create({
+      brand: "Kia",
+      model: "Seltos",
+      category: "SUV",
+      year: 2022,
+      price: 1700000,
+      fuelType: "Petrol",
+      transmission: "Automatic",
+      mileage: 14000,
+      color: "Grey",
+      quantity: 2,
+    });
+
+    const res = await request(app)
+      .post(`/api/vehicles/${vehicle._id}/restock`)
+      .set("Authorization", `Bearer ${adminToken}`)
+      .send({});
+
+    expect(res.status).toBe(200);
+    expect(res.body.vehicle.quantity).toBe(3);
+  });
+
+  it("should return 404 when restocking a missing vehicle", async () => {
+    const res = await request(app)
+      .post("/api/vehicles/507f1f77bcf86cd799439011/restock")
+      .set("Authorization", `Bearer ${adminToken}`)
+      .send({ quantity: 2 });
+
+    expect(res.status).toBe(404);
+    expect(res.body.message).toBe("Vehicle not found");
   });
 
   it("should return only SUV vehicles when category=SUV is passed", async () => {
@@ -637,5 +721,55 @@ describe("Vehicle Routes", () => {
     expect(res.status).toBe(200);
     expect(res.body.data.length).toBe(1);
     expect(res.body.data[0].brand).toBe("Toyota");
+  });
+
+  it("should combine filters and sort descending", async () => {
+    await Vehicle.create([
+      {
+        brand: "Toyota",
+        model: "Corolla",
+        category: "Sedan",
+        year: 2022,
+        price: 1800000,
+        fuelType: "Petrol",
+        transmission: "Automatic",
+        mileage: 12000,
+        color: "White",
+        quantity: 2,
+      },
+      {
+        brand: "Toyota",
+        model: "Camry",
+        category: "Sedan",
+        year: 2023,
+        price: 3200000,
+        fuelType: "Petrol",
+        transmission: "Automatic",
+        mileage: 8000,
+        color: "Black",
+        quantity: 1,
+      },
+      {
+        brand: "Honda",
+        model: "City",
+        category: "Sedan",
+        year: 2021,
+        price: 1200000,
+        fuelType: "Petrol",
+        transmission: "Manual",
+        mileage: 22000,
+        color: "White",
+        quantity: 3,
+      },
+    ]);
+
+    const res = await request(app).get(
+      "/api/vehicles?brand=toyota&category=Sedan&minPrice=1000000&maxPrice=3500000&sortBy=price&order=desc"
+    );
+
+    expect(res.status).toBe(200);
+    expect(res.body.data).toHaveLength(2);
+    expect(res.body.data[0].price).toBe(3200000);
+    expect(res.body.data[1].price).toBe(1800000);
   });
 });

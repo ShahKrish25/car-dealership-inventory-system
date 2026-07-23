@@ -1,6 +1,6 @@
 import request from "supertest";
 import app from "../app";
-// import authRoutes from "../routes/auth.routes";
+import User from "../models/user.model";
 
 
 describe("POST /api/auth/login", () => {
@@ -38,5 +38,18 @@ describe("POST /api/auth/login", () => {
     });
 
     expect(res.status).toBe(401);
+  });
+
+  it("should return 500 when login persistence fails", async () => {
+    jest.spyOn(User, "findOne").mockRejectedValueOnce(new Error("database error"));
+
+    const res = await request(app).post("/api/auth/login").send({
+      email: "error@test.com",
+      password: "mypassword123",
+    });
+
+    expect(res.status).toBe(500);
+    expect(res.body.message).toBe("Server error");
+    jest.restoreAllMocks();
   });
 });

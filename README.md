@@ -218,10 +218,10 @@ Latest saved report: [`docs/coverage-report.txt`](./docs/coverage-report.txt)
 ### Coverage Summary
 | Metric | Coverage |
 |---|---|
-| Statements | **90.64%** |
-| Branches | **76.92%** |
+| Statements | **95.9%** |
+| Branches | **90.38%** |
 | Functions | **100%** |
-| Lines | **90.38%** |
+| Lines | **96.15%** |
 
 ### Test Suites
 | Suite | Tests | Description |
@@ -235,7 +235,7 @@ Latest saved report: [`docs/coverage-report.txt`](./docs/coverage-report.txt)
 | `applyVehicleFilters.test.ts` | Filter reset / clear-on-All behavior |
 | `sanity.test.ts` | Sanity check |
 
-**Total: 34 tests — all passing**
+**Total: 44 tests — all passing**
 
 HTML report (local): after `npm run test:coverage`, open `coverage/lcov-report/index.html`
 

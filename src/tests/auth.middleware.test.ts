@@ -46,6 +46,27 @@ describe("Auth Middleware", () => {
     expect(next).toHaveBeenCalled();
   });
 
+  it("should return 401 if the token is invalid", () => {
+    const req = {
+      headers: {
+        authorization: "Bearer invalid-token",
+      },
+    } as AuthRequest;
+
+    const res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    } as unknown as Response;
+
+    const next = jest.fn() as NextFunction;
+
+    authenticate(req, res, next);
+
+    expect(res.status).toHaveBeenCalledWith(401);
+    expect(res.json).toHaveBeenCalledWith({ message: "Invalid token" });
+    expect(next).not.toHaveBeenCalled();
+  });
+
   it("should return 403 if user is not admin", () => {
     const req = {
       user: { id: "123", role: "user" },
