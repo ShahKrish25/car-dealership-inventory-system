@@ -41,8 +41,8 @@ export default function AdminVehicleForm({ vehicle, onClose, onSubmit, loading }
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/50 backdrop-blur-sm">
       <div className="bg-white rounded-xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden border border-gray-200">
-        <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
-          <h2 className="text-xl font-bold text-gray-900">
+        <div className="px-4 sm:px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-gray-50 gap-3">
+          <h2 className="text-lg sm:text-xl font-bold text-gray-900 truncate">
             {vehicle ? '✏️ Edit Vehicle' : '➕ Add New Vehicle'}
           </h2>
           <button
@@ -54,7 +54,7 @@ export default function AdminVehicleForm({ vehicle, onClose, onSubmit, loading }
           </button>
         </div>
 
-        <div className="p-6 overflow-y-auto">
+        <div className="p-4 sm:p-6 overflow-y-auto">
           <form id="admin-vehicle-form" onSubmit={handleSubmit} className="space-y-5">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div>
@@ -118,11 +118,11 @@ export default function AdminVehicleForm({ vehicle, onClose, onSubmit, loading }
           </form>
         </div>
 
-        <div className="px-6 py-4 border-t border-gray-200 bg-gray-50 flex justify-end gap-3">
+        <div className="px-4 sm:px-6 py-4 border-t border-gray-200 bg-gray-50 flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-md text-sm font-semibold hover:bg-gray-50 transition-colors"
+            className="w-full sm:w-auto px-4 py-2.5 bg-white border border-gray-300 text-gray-700 rounded-md text-sm font-semibold hover:bg-gray-50 transition-colors"
           >
             Cancel
           </button>
@@ -130,7 +130,7 @@ export default function AdminVehicleForm({ vehicle, onClose, onSubmit, loading }
             type="submit"
             form="admin-vehicle-form"
             disabled={loading}
-            className="px-6 py-2 bg-blue-600 text-white rounded-md text-sm font-semibold hover:bg-blue-700 disabled:bg-blue-400 transition-colors shadow-sm"
+            className="w-full sm:w-auto px-6 py-2.5 bg-blue-600 text-white rounded-md text-sm font-semibold hover:bg-blue-700 disabled:bg-blue-400 transition-colors shadow-sm"
           >
             {loading ? 'Saving...' : 'Save Vehicle'}
           </button>

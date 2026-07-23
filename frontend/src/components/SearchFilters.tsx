@@ -31,9 +31,9 @@ export default function SearchFilters({ onFilter }: Props) {
   const labelClasses = "block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1.5";
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm mb-8">
+    <form onSubmit={handleSubmit} className="bg-white p-4 sm:p-5 rounded-xl border border-gray-200 shadow-sm mb-6 sm:mb-8">
       {/* Search Input */}
-      <div className="mb-5 relative">
+      <div className="mb-4 sm:mb-5 relative">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <span className="text-gray-400">🔍</span>
         </div>
@@ -46,7 +46,7 @@ export default function SearchFilters({ onFilter }: Props) {
         />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4 sm:mb-5">
         <div>
           <label className={labelClasses}>Brand</label>
           <input
@@ -136,19 +136,19 @@ export default function SearchFilters({ onFilter }: Props) {
         </div>
       </div>
 
-      <div className="flex gap-3">
-        <button
-          type="submit"
-          className="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-md text-sm font-semibold shadow-sm transition-colors"
-        >
-          Search & Filter
-        </button>
+      <div className="flex flex-col-reverse sm:flex-row gap-3">
         <button
           type="button"
           onClick={handleReset}
-          className="px-6 py-2.5 bg-white border border-gray-300 text-gray-700 rounded-md text-sm font-semibold hover:bg-gray-50 transition-colors"
+          className="w-full sm:w-auto px-6 py-2.5 bg-white border border-gray-300 text-gray-700 rounded-md text-sm font-semibold hover:bg-gray-50 transition-colors"
         >
           Reset
+        </button>
+        <button
+          type="submit"
+          className="w-full sm:flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-md text-sm font-semibold shadow-sm transition-colors"
+        >
+          Search & Filter
         </button>
       </div>
     </form>

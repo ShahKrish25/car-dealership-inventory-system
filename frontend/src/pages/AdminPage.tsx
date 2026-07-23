@@ -125,25 +125,25 @@ export default function AdminPage() {
   if (!isAdmin) return null;
 
   return (
-    <div className="min-h-[calc(100vh-64px)] bg-gray-50 py-8">
+    <div className="min-h-[calc(100vh-64px)] bg-gray-50 py-5 sm:py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight mb-1">
+        <div className="mb-5 sm:mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+          <div className="min-w-0">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight mb-1">
               Admin Panel
             </h1>
             <p className="text-gray-500 text-sm">
               Manage your entire vehicle inventory
             </p>
           </div>
-          <div className="flex items-center gap-4">
-            <span className="inline-flex items-center px-4 py-2 rounded-lg bg-white border border-gray-200 shadow-sm text-sm font-semibold text-gray-700">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4 w-full sm:w-auto">
+            <span className="inline-flex justify-center items-center px-4 py-2 rounded-lg bg-white border border-gray-200 shadow-sm text-sm font-semibold text-gray-700">
               {total} Total Vehicles
             </span>
             <button
               onClick={() => { setSelectedVehicle(null); setModalMode('create'); }}
-              className="px-5 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold shadow-sm hover:bg-blue-700 transition-colors"
+              className="px-5 py-2.5 bg-blue-600 text-white rounded-lg text-sm font-semibold shadow-sm hover:bg-blue-700 transition-colors"
             >
               + Add Vehicle
             </button>
@@ -163,7 +163,7 @@ export default function AdminPage() {
         )}
 
         {/* Stats bar */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
           {[
             { label: 'Total Vehicles', value: total, icon: '🚗', colorClass: 'text-blue-600', bgClass: 'bg-blue-50' },
             { label: 'In Stock', value: vehicles.filter((v) => v.quantity > 0).length, icon: '✅', colorClass: 'text-green-600', bgClass: 'bg-green-50' },
@@ -200,7 +200,7 @@ export default function AdminPage() {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
             {vehicles.map((vehicle) => (
               <VehicleCard
                 key={vehicle._id}

@@ -53,24 +53,27 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-64px)] bg-gray-50 py-8">
+    <div className="min-h-[calc(100vh-64px)] bg-gray-50 py-5 sm:py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight mb-1">
+        <div className="mb-5 sm:mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+          <div className="min-w-0">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight mb-1">
               Vehicle Inventory
             </h1>
-            <p className="text-gray-500 text-sm">
-              Welcome back, <span className="font-semibold text-blue-600">{user?.id ? 'User' : 'Guest'}</span>
+            <p className="text-gray-500 text-sm flex flex-wrap items-center gap-2">
+              <span>
+                Welcome back,{' '}
+                <span className="font-semibold text-blue-600">{user?.id ? 'User' : 'Guest'}</span>
+              </span>
               {isAdmin && (
-                <span className="ml-3 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                   Admin Mode
                 </span>
               )}
             </p>
           </div>
-          <div className="inline-flex items-center px-4 py-2 rounded-lg bg-white border border-gray-200 shadow-sm text-sm font-semibold text-gray-700">
+          <div className="inline-flex self-start sm:self-auto items-center px-4 py-2 rounded-lg bg-white border border-gray-200 shadow-sm text-sm font-semibold text-gray-700">
             {loading ? '...' : total} vehicles found
           </div>
         </div>
@@ -111,7 +114,7 @@ export default function DashboardPage() {
 
         {!loading && !error && vehicles.length > 0 && (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
               {vehicles.map((vehicle) => (
                 <VehicleCard
                   key={vehicle._id}
