@@ -1,18 +1,19 @@
 import { Request, Response } from "express";
 import Vehicle from "../models/vehicle.model";
 
+const EXACT_FILTER_FIELDS = [
+  "brand",
+  "model",
+  "category",
+  "fuelType",
+  "transmission",
+] as const;
+
 export const buildVehicleFilter = (query: Request["query"]) => {
   const { minPrice, maxPrice, search } = query;
   const filter: Record<string, unknown> = {};
 
-  const exactFields = [
-    "brand",
-    "model",
-    "category",
-    "fuelType",
-    "transmission",
-  ] as const;
-  for (const field of exactFields) {
+  for (const field of EXACT_FILTER_FIELDS) {
     if (query[field]) filter[field] = query[field];
   }
 
