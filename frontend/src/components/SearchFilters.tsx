@@ -44,7 +44,7 @@ export default function SearchFilters({ onFilter }: Props) {
         />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-5">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-5">
         <div>
           <label className={labelClasses}>Brand</label>
           <input
@@ -84,6 +84,19 @@ export default function SearchFilters({ onFilter }: Props) {
             <option value="Diesel">Diesel</option>
             <option value="Electric">Electric</option>
             <option value="Hybrid">Hybrid</option>
+          </select>
+        </div>
+
+        <div>
+          <label className={labelClasses}>Transmission</label>
+          <select
+            value={filters.transmission || ''}
+            onChange={(e) => handleChange('transmission', e.target.value)}
+            className={inputClasses}
+          >
+            <option value="">All Transmissions</option>
+            <option value="Automatic">Automatic</option>
+            <option value="Manual">Manual</option>
           </select>
         </div>
 

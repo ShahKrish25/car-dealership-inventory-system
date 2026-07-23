@@ -21,6 +21,7 @@ export interface VehicleFilters {
   brand?: string;
   category?: string;
   fuelType?: string;
+  transmission?: string;
   minPrice?: string;
   maxPrice?: string;
   sortBy?: string;
