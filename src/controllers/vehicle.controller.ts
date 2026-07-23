@@ -9,18 +9,19 @@ const EXACT_FILTER_FIELDS = [
   "transmission",
 ] as const;
 
+const CASE_INSENSITIVE_FIELDS = new Set(["brand", "model"]);
+
 export const buildVehicleFilter = (query: Request["query"]) => {
   const { minPrice, maxPrice, search } = query;
   const filter: Record<string, unknown> = {};
 
   for (const field of EXACT_FILTER_FIELDS) {
-    if (!query[field]) continue;
+    const value = query[field];
+    if (!value) continue;
 
-    if (field === "brand") {
-      filter.brand = { $regex: `^${query.brand}$`, $options: "i" };
-    } else {
-      filter[field] = query[field];
-    }
+    filter[field] = CASE_INSENSITIVE_FIELDS.has(field)
+      ? { $regex: `^${value}$`, $options: "i" }
+      : value;
   }
 
   if (minPrice || maxPrice) {
