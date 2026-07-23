@@ -311,6 +311,41 @@ describe("Vehicle Routes", () => {
     expect(res.status).toBe(403);
   });
 
+  it("should return only SUV vehicles when category=SUV is passed", async () => {
+    await Vehicle.create([
+      {
+        brand: "BMW",
+        model: "M5",
+        category: "Sedan",
+        year: 2023,
+        price: 90000,
+        fuelType: "Petrol",
+        transmission: "Automatic",
+        mileage: 500,
+        color: "Black",
+        quantity: 2,
+      },
+      {
+        brand: "Toyota",
+        model: "Fortuner",
+        category: "SUV",
+        year: 2023,
+        price: 45000,
+        fuelType: "Diesel",
+        transmission: "Automatic",
+        mileage: 1000,
+        color: "White",
+        quantity: 3,
+      },
+    ]);
+
+    const res = await request(app).get("/api/vehicles?category=SUV");
+
+    expect(res.status).toBe(200);
+    expect(res.body.data.length).toBe(1);
+    expect(res.body.data[0].category).toBe("SUV");
+  });
+
   it("should filter vehicles by brand", async () => {
     await Vehicle.create([
       {
