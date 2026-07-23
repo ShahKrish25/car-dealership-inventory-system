@@ -14,7 +14,13 @@ export const buildVehicleFilter = (query: Request["query"]) => {
   const filter: Record<string, unknown> = {};
 
   for (const field of EXACT_FILTER_FIELDS) {
-    if (query[field]) filter[field] = query[field];
+    if (!query[field]) continue;
+
+    if (field === "brand") {
+      filter.brand = { $regex: `^${query.brand}$`, $options: "i" };
+    } else {
+      filter[field] = query[field];
+    }
   }
 
   if (minPrice || maxPrice) {
