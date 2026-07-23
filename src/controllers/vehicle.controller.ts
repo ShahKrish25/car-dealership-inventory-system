@@ -5,6 +5,7 @@ export const getVehicles = async (req: Request, res: Response) => {
   try {
     const {
       brand,
+      category,
       fuelType,
       minPrice,
       maxPrice,
@@ -19,6 +20,10 @@ export const getVehicles = async (req: Request, res: Response) => {
 
     if (brand) {
       filter.brand = brand;
+    }
+
+    if (category) {
+      filter.category = category;
     }
 
     if (fuelType) {
