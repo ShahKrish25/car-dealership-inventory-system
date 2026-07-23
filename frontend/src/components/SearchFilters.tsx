@@ -14,7 +14,12 @@ export default function SearchFilters({ onFilter }: Props) {
   const [filters, setFilters] = useState<VehicleFilters>({});
 
   const handleChange = (key: keyof VehicleFilters, value: string | number) => {
-    setFilters((prev) => ({ ...prev, [key]: value }));
+    const nextFilters = { ...filters, [key]: value };
+    setFilters(nextFilters);
+
+    if (key === 'search') {
+      onFilter(omitEmptyFilters(nextFilters));
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
